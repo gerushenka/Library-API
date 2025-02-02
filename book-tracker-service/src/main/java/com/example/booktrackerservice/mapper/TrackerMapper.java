@@ -7,8 +7,6 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public interface TrackerMapper {
-    TrackerMapper INSTANCE = Mappers.getMapper(TrackerMapper.class);
-
 
     TrackerDto toDto(Tracker bookTracker);
 

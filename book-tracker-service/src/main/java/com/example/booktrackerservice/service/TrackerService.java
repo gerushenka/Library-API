@@ -2,7 +2,7 @@ package com.example.booktrackerservice.service;
 
 import com.example.booktrackerservice.dto.TrackerDto;
 import com.example.booktrackerservice.entity.Tracker;
-import com.example.booktrackerservice.repositories.TrackerRepository;
+import com.example.booktrackerservice.repository.TrackerRepository;
 import com.example.booktrackerservice.mapper.TrackerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

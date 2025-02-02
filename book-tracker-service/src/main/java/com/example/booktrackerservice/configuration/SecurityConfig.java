@@ -36,7 +36,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-
     @Bean
     public JwtAuthenticationConverter jwtConverter() {
         JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
@@ -46,7 +45,8 @@ public class SecurityConfig {
         converter.setJwtGrantedAuthoritiesConverter(jwt -> {
             Collection<GrantedAuthority> authorities = grantedAuthoritiesConverter.convert(jwt);
             Map<String, Object> claims = jwt.getClaimAsMap("realm_access");
-            List<String> roles = (List<String>) claims.get("roles");
+
+            List<String> roles = claims != null ? (List<String>) claims.getOrDefault("roles", List.of()) : List.of();
 
             return Stream.concat(authorities.stream(),
                             roles.stream()
