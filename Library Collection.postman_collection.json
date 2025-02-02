@@ -1,0 +1,434 @@
+{
+	"info": {
+		"_postman_id": "db16ca17-b427-422d-9dcf-86275067d7f7",
+		"name": "Library Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33343494"
+	},
+	"item": [
+		{
+			"name": "get MANAGER token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "spring",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "zzsCsUjQ2qQA5aVvl5wBgjDKQkWIigadB",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "bobby",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/realms/users/protocol/openid-connect/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"realms",
+						"users",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get USER token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "spring",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "zzsCsUjQ2qQA5aVvl5wBgjDKQkWIigadB",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "garry",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/realms/users/protocol/openid-connect/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"realms",
+						"users",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get book by id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJrUUQ1WGdEYlBUVFMwUG9jM000ZG1Bcjk2X21GODU0Y202LWVoZ3M0eUpJIn0.eyJleHAiOjE3Mzg0OTY2NzMsImlhdCI6MTczODQ5NjM3MywianRpIjoiZjg2M2UxY2YtOGM2ZC00YjQ1LTg2ZTEtZTRmY2EzN2Q0ZWY3IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy91c2VycyIsInN1YiI6IjhlNWViMjEyLTFmMjQtNDljMS1hN2Q1LWViMTg5MTcyMjlmMiIsInR5cCI6IkJlYXJlciIsImF6cCI6InNwcmluZyIsInNpZCI6IjcxMmRiOGI1LTk2NjEtNDA5Ny1hZjdmLWExZGQ3NDBhNzk2ZCIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDo4MDgyIiwiaHR0cDovL2xvY2FsaG9zdDo4MDgxIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJST0xFX01BTkFHRVIiXX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkJvYmJ5IE1hbmFnZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJib2JieSIsImdpdmVuX25hbWUiOiJCb2JieSIsImZhbWlseV9uYW1lIjoiTWFuYWdlciIsImVtYWlsIjoiYm9iYnlAZXhhbXBsZS5jb20ifQ.TxHXuAyOJEPsc_jfbqrgodgaynw09oAA9Zjf7HE-zAoERSkfiyZJ0MFhTqwG0k2_g328D5ZLS0zPAHZYF2NpTOY-l0qOnm3vXLqJL8NKn-rbKS_iw9FDtI77R2pc1SvtkQ9wymU5ltrDbU43fh8_TkUARyAmnfn0aEyi_dayCADP6rjFy_FXhtxkDf2A0eTg4RYW1tHwy4i-VfyhzmHCVzuvSsLnQwArOJsknnkqs_VPSJe9wS8uzhH8S7C9kRpGepFwmj-oYjRsoZaLCAECseaskuqUHMMZnQVdKOYb8_g9TkO5Qy9RWwQIuPwyNqUWDYv4LSihEUOrgSjxAXAnqA",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/library/book/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"library",
+						"book",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all books",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJrUUQ1WGdEYlBUVFMwUG9jM000ZG1Bcjk2X21GODU0Y202LWVoZ3M0eUpJIn0.eyJleHAiOjE3Mzg0OTY3NjAsImlhdCI6MTczODQ5NjQ2MCwianRpIjoiY2EyMTg0MjYtYzEzNi00ODM3LTk4ZGMtNmM0ZWM5ZmYxY2FiIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy91c2VycyIsInN1YiI6IjBlOGViNjI0LTI0MTEtNGFhNS1hZWQzLTBkMmNkNWM4Y2IzMSIsInR5cCI6IkJlYXJlciIsImF6cCI6InNwcmluZyIsInNpZCI6IjBmYzc2YmZlLTgzNTUtNGU1OC1hYTM5LTcwOGZjMDJmOGYzMSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDo4MDgyIiwiaHR0cDovL2xvY2FsaG9zdDo4MDgxIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJST0xFX1VTRVIiXX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkdhcnJ5IFVzZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJnYXJyeSIsImdpdmVuX25hbWUiOiJHYXJyeSIsImZhbWlseV9uYW1lIjoiVXNlciIsImVtYWlsIjoiZ2FycnlAZXhhbXBsZS5jb20ifQ.5DANaaNhcmlJrWrRZAmCm1y-H-G59werZtlLxeK820v_Rin4m_ZW5BwAqy1TQhCBfzIBORD1CmsQBQF82YBnalRhddwBMbnwjuu9IUE7FaaOKdU_ylrl5qRVG0WftaABezt1Yc5QAs7ELYQC_RFhiC40C_qafRnr3W-9SLJFGJpU8KEJ084OT3twJ1PkrJjnDJ606tNcOZzAxyZPlYkh7A4jl5rfnjhMexEfbMEalpQvM-W3VAFHXcEg2d9QJHvtevYMJ7YAxOHpMxlxcJRrXqRc0tMAuOuzpDS2KTx4ikFIp4oTR_BfK5ki_mMSpP1_oSKLe4IUwld_GfMqmg8RuA",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/library/book/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"library",
+						"book",
+						"all"
+					],
+					"query": [
+						{
+							"key": "Authorization",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get active books",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJrUUQ1WGdEYlBUVFMwUG9jM000ZG1Bcjk2X21GODU0Y202LWVoZ3M0eUpJIn0.eyJleHAiOjE3Mzg0OTY3NjAsImlhdCI6MTczODQ5NjQ2MCwianRpIjoiY2EyMTg0MjYtYzEzNi00ODM3LTk4ZGMtNmM0ZWM5ZmYxY2FiIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy91c2VycyIsInN1YiI6IjBlOGViNjI0LTI0MTEtNGFhNS1hZWQzLTBkMmNkNWM4Y2IzMSIsInR5cCI6IkJlYXJlciIsImF6cCI6InNwcmluZyIsInNpZCI6IjBmYzc2YmZlLTgzNTUtNGU1OC1hYTM5LTcwOGZjMDJmOGYzMSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDo4MDgyIiwiaHR0cDovL2xvY2FsaG9zdDo4MDgxIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJST0xFX1VTRVIiXX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkdhcnJ5IFVzZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJnYXJyeSIsImdpdmVuX25hbWUiOiJHYXJyeSIsImZhbWlseV9uYW1lIjoiVXNlciIsImVtYWlsIjoiZ2FycnlAZXhhbXBsZS5jb20ifQ.5DANaaNhcmlJrWrRZAmCm1y-H-G59werZtlLxeK820v_Rin4m_ZW5BwAqy1TQhCBfzIBORD1CmsQBQF82YBnalRhddwBMbnwjuu9IUE7FaaOKdU_ylrl5qRVG0WftaABezt1Yc5QAs7ELYQC_RFhiC40C_qafRnr3W-9SLJFGJpU8KEJ084OT3twJ1PkrJjnDJ606tNcOZzAxyZPlYkh7A4jl5rfnjhMexEfbMEalpQvM-W3VAFHXcEg2d9QJHvtevYMJ7YAxOHpMxlxcJRrXqRc0tMAuOuzpDS2KTx4ikFIp4oTR_BfK5ki_mMSpP1_oSKLe4IUwld_GfMqmg8RuA",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/library/book/active",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"library",
+						"book",
+						"active"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get book by isbn",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJrUUQ1WGdEYlBUVFMwUG9jM000ZG1Bcjk2X21GODU0Y202LWVoZ3M0eUpJIn0.eyJleHAiOjE3Mzg0OTY3NjAsImlhdCI6MTczODQ5NjQ2MCwianRpIjoiY2EyMTg0MjYtYzEzNi00ODM3LTk4ZGMtNmM0ZWM5ZmYxY2FiIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy91c2VycyIsInN1YiI6IjBlOGViNjI0LTI0MTEtNGFhNS1hZWQzLTBkMmNkNWM4Y2IzMSIsInR5cCI6IkJlYXJlciIsImF6cCI6InNwcmluZyIsInNpZCI6IjBmYzc2YmZlLTgzNTUtNGU1OC1hYTM5LTcwOGZjMDJmOGYzMSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDo4MDgyIiwiaHR0cDovL2xvY2FsaG9zdDo4MDgxIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJST0xFX1VTRVIiXX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkdhcnJ5IFVzZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJnYXJyeSIsImdpdmVuX25hbWUiOiJHYXJyeSIsImZhbWlseV9uYW1lIjoiVXNlciIsImVtYWlsIjoiZ2FycnlAZXhhbXBsZS5jb20ifQ.5DANaaNhcmlJrWrRZAmCm1y-H-G59werZtlLxeK820v_Rin4m_ZW5BwAqy1TQhCBfzIBORD1CmsQBQF82YBnalRhddwBMbnwjuu9IUE7FaaOKdU_ylrl5qRVG0WftaABezt1Yc5QAs7ELYQC_RFhiC40C_qafRnr3W-9SLJFGJpU8KEJ084OT3twJ1PkrJjnDJ606tNcOZzAxyZPlYkh7A4jl5rfnjhMexEfbMEalpQvM-W3VAFHXcEg2d9QJHvtevYMJ7YAxOHpMxlxcJRrXqRc0tMAuOuzpDS2KTx4ikFIp4oTR_BfK5ki_mMSpP1_oSKLe4IUwld_GfMqmg8RuA",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/library/isbn/978-3-16-148411-7",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"library",
+						"isbn",
+						"978-3-16-148411-7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete book",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJrUUQ1WGdEYlBUVFMwUG9jM000ZG1Bcjk2X21GODU0Y202LWVoZ3M0eUpJIn0.eyJleHAiOjE3Mzg0OTY3NjAsImlhdCI6MTczODQ5NjQ2MCwianRpIjoiY2EyMTg0MjYtYzEzNi00ODM3LTk4ZGMtNmM0ZWM5ZmYxY2FiIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy91c2VycyIsInN1YiI6IjBlOGViNjI0LTI0MTEtNGFhNS1hZWQzLTBkMmNkNWM4Y2IzMSIsInR5cCI6IkJlYXJlciIsImF6cCI6InNwcmluZyIsInNpZCI6IjBmYzc2YmZlLTgzNTUtNGU1OC1hYTM5LTcwOGZjMDJmOGYzMSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDo4MDgyIiwiaHR0cDovL2xvY2FsaG9zdDo4MDgxIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJST0xFX1VTRVIiXX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkdhcnJ5IFVzZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJnYXJyeSIsImdpdmVuX25hbWUiOiJHYXJyeSIsImZhbWlseV9uYW1lIjoiVXNlciIsImVtYWlsIjoiZ2FycnlAZXhhbXBsZS5jb20ifQ.5DANaaNhcmlJrWrRZAmCm1y-H-G59werZtlLxeK820v_Rin4m_ZW5BwAqy1TQhCBfzIBORD1CmsQBQF82YBnalRhddwBMbnwjuu9IUE7FaaOKdU_ylrl5qRVG0WftaABezt1Yc5QAs7ELYQC_RFhiC40C_qafRnr3W-9SLJFGJpU8KEJ084OT3twJ1PkrJjnDJ606tNcOZzAxyZPlYkh7A4jl5rfnjhMexEfbMEalpQvM-W3VAFHXcEg2d9QJHvtevYMJ7YAxOHpMxlxcJRrXqRc0tMAuOuzpDS2KTx4ikFIp4oTR_BfK5ki_mMSpP1_oSKLe4IUwld_GfMqmg8RuA",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/library/book/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"library",
+						"book",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add book",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJrUUQ1WGdEYlBUVFMwUG9jM000ZG1Bcjk2X21GODU0Y202LWVoZ3M0eUpJIn0.eyJleHAiOjE3Mzg0OTY3NjAsImlhdCI6MTczODQ5NjQ2MCwianRpIjoiY2EyMTg0MjYtYzEzNi00ODM3LTk4ZGMtNmM0ZWM5ZmYxY2FiIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy91c2VycyIsInN1YiI6IjBlOGViNjI0LTI0MTEtNGFhNS1hZWQzLTBkMmNkNWM4Y2IzMSIsInR5cCI6IkJlYXJlciIsImF6cCI6InNwcmluZyIsInNpZCI6IjBmYzc2YmZlLTgzNTUtNGU1OC1hYTM5LTcwOGZjMDJmOGYzMSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDo4MDgyIiwiaHR0cDovL2xvY2FsaG9zdDo4MDgxIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJST0xFX1VTRVIiXX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkdhcnJ5IFVzZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJnYXJyeSIsImdpdmVuX25hbWUiOiJHYXJyeSIsImZhbWlseV9uYW1lIjoiVXNlciIsImVtYWlsIjoiZ2FycnlAZXhhbXBsZS5jb20ifQ.5DANaaNhcmlJrWrRZAmCm1y-H-G59werZtlLxeK820v_Rin4m_ZW5BwAqy1TQhCBfzIBORD1CmsQBQF82YBnalRhddwBMbnwjuu9IUE7FaaOKdU_ylrl5qRVG0WftaABezt1Yc5QAs7ELYQC_RFhiC40C_qafRnr3W-9SLJFGJpU8KEJ084OT3twJ1PkrJjnDJ606tNcOZzAxyZPlYkh7A4jl5rfnjhMexEfbMEalpQvM-W3VAFHXcEg2d9QJHvtevYMJ7YAxOHpMxlxcJRrXqRc0tMAuOuzpDS2KTx4ikFIp4oTR_BfK5ki_mMSpP1_oSKLe4IUwld_GfMqmg8RuA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"isbn\": \"978-3-16-148411-11\",\r\n    \"title\": \"Book3\",\r\n    \"genre\": \"Fantasy\",\r\n    \"description\": \"Description3\",\r\n    \"author\": \"Author3\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/library/book",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"library",
+						"book"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "change book information",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJrUUQ1WGdEYlBUVFMwUG9jM000ZG1Bcjk2X21GODU0Y202LWVoZ3M0eUpJIn0.eyJleHAiOjE3Mzg0OTY3NjAsImlhdCI6MTczODQ5NjQ2MCwianRpIjoiY2EyMTg0MjYtYzEzNi00ODM3LTk4ZGMtNmM0ZWM5ZmYxY2FiIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy91c2VycyIsInN1YiI6IjBlOGViNjI0LTI0MTEtNGFhNS1hZWQzLTBkMmNkNWM4Y2IzMSIsInR5cCI6IkJlYXJlciIsImF6cCI6InNwcmluZyIsInNpZCI6IjBmYzc2YmZlLTgzNTUtNGU1OC1hYTM5LTcwOGZjMDJmOGYzMSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDo4MDgyIiwiaHR0cDovL2xvY2FsaG9zdDo4MDgxIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJST0xFX1VTRVIiXX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkdhcnJ5IFVzZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJnYXJyeSIsImdpdmVuX25hbWUiOiJHYXJyeSIsImZhbWlseV9uYW1lIjoiVXNlciIsImVtYWlsIjoiZ2FycnlAZXhhbXBsZS5jb20ifQ.5DANaaNhcmlJrWrRZAmCm1y-H-G59werZtlLxeK820v_Rin4m_ZW5BwAqy1TQhCBfzIBORD1CmsQBQF82YBnalRhddwBMbnwjuu9IUE7FaaOKdU_ylrl5qRVG0WftaABezt1Yc5QAs7ELYQC_RFhiC40C_qafRnr3W-9SLJFGJpU8KEJ084OT3twJ1PkrJjnDJ606tNcOZzAxyZPlYkh7A4jl5rfnjhMexEfbMEalpQvM-W3VAFHXcEg2d9QJHvtevYMJ7YAxOHpMxlxcJRrXqRc0tMAuOuzpDS2KTx4ikFIp4oTR_BfK5ki_mMSpP1_oSKLe4IUwld_GfMqmg8RuA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"isbn\": \"978-3-16-148411-10\",\r\n    \"title\": \"BookUpdated\",\r\n    \"genre\": \"Mystery\",\r\n    \"description\": \"DescriptionUpdated\",\r\n    \"author\": \"AuthorUpdated\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/library/book/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"library",
+						"book",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get available books",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJrUUQ1WGdEYlBUVFMwUG9jM000ZG1Bcjk2X21GODU0Y202LWVoZ3M0eUpJIn0.eyJleHAiOjE3Mzg0OTczODQsImlhdCI6MTczODQ5NzA4NCwianRpIjoiZTYzNjk3NjktNjMwZi00YmM0LTkxYzItMGEyOTE1OWIwOWFkIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy91c2VycyIsInN1YiI6IjhlNWViMjEyLTFmMjQtNDljMS1hN2Q1LWViMTg5MTcyMjlmMiIsInR5cCI6IkJlYXJlciIsImF6cCI6InNwcmluZyIsInNpZCI6IjkyNjg5YTNiLTIxZjQtNDhiYS1iYmVlLTFhYjBlZjk4NzIyZSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDo4MDgyIiwiaHR0cDovL2xvY2FsaG9zdDo4MDgxIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJST0xFX01BTkFHRVIiXX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkJvYmJ5IE1hbmFnZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJib2JieSIsImdpdmVuX25hbWUiOiJCb2JieSIsImZhbWlseV9uYW1lIjoiTWFuYWdlciIsImVtYWlsIjoiYm9iYnlAZXhhbXBsZS5jb20ifQ.ZVd8Oi33adPNKBnt3b4jft3tJ86hKWe0y3Be4dhI97b6PLTOfMT8PGlvJK5lqs1s7_JyNQiGyYBZ5yF5kTnf7TOy3IF6iO6pyu8L9GrPqBUv3VlkcujrNTA1lmfN5nX8-jXoOJ6j9WG-WV6Iyp7nHETuqN-Bl0QiAsGVqb3Xsgzo-x1h_HLDMM4tGqzfi_CGTFrrbpbVuzlxBVuBhVypqbJZ--ZEP2AItCDdQqzFGd0xyos4_7wj-qKpIQRx7ZLILeMU04V-7DPKrxorYUK4hM2lzNz99oE5Fu8JCzU9v4XGqd67qGLFVnDRcPmkLCtTGiF0tQVvfV31qlmfqxfWEA",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8081/library/available",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"library",
+						"available"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get available statuses",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJrUUQ1WGdEYlBUVFMwUG9jM000ZG1Bcjk2X21GODU0Y202LWVoZ3M0eUpJIn0.eyJleHAiOjE3Mzg0OTczMzksImlhdCI6MTczODQ5NzAzOSwianRpIjoiY2ZhNjJiYWQtMjExNi00OTdkLThhYzEtMGU2YTgzNmRjYzU0IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy91c2VycyIsInN1YiI6IjBlOGViNjI0LTI0MTEtNGFhNS1hZWQzLTBkMmNkNWM4Y2IzMSIsInR5cCI6IkJlYXJlciIsImF6cCI6InNwcmluZyIsInNpZCI6IjQwMzliZDZmLTcyMWItNDM4ZS04NWQzLTg1MjAwYWVkYjRmNSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDo4MDgyIiwiaHR0cDovL2xvY2FsaG9zdDo4MDgxIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJST0xFX1VTRVIiXX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkdhcnJ5IFVzZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJnYXJyeSIsImdpdmVuX25hbWUiOiJHYXJyeSIsImZhbWlseV9uYW1lIjoiVXNlciIsImVtYWlsIjoiZ2FycnlAZXhhbXBsZS5jb20ifQ.KRRI9kVfbHBKMmSokb303SwPvTgXy99zifynaHYN6QDEn2yn2FGzMtU7Lv5w3ICGu2bTyXpCw0yvm0638yERLxiRLhk6adSC9Cw1cxsltIWaIld1u2aQb5RKkFRlO_xBXnS3OMrd97OPzsJnyezUZuAK1TDsg63JQhnct1ExQYzt_70h-w9Ojsna-CzRclLZpLNn4M1JsS_L8x_Sz3rM7y_j9h7lMnkFpalpg3EtwL0XevbZgYJnqpQVeDOSthGYKn7xTuMJcvBolvEuaxOlx4Ji422l_2w85lhHcJgU3PjFv7qC6R26J3WZ0ue1MO5NhBiaiX_01fzy--XxZ842Wg",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8082/tracker/available",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"tracker",
+						"available"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all statuses",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJrUUQ1WGdEYlBUVFMwUG9jM000ZG1Bcjk2X21GODU0Y202LWVoZ3M0eUpJIn0.eyJleHAiOjE3Mzg0OTczODQsImlhdCI6MTczODQ5NzA4NCwianRpIjoiZTYzNjk3NjktNjMwZi00YmM0LTkxYzItMGEyOTE1OWIwOWFkIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy91c2VycyIsInN1YiI6IjhlNWViMjEyLTFmMjQtNDljMS1hN2Q1LWViMTg5MTcyMjlmMiIsInR5cCI6IkJlYXJlciIsImF6cCI6InNwcmluZyIsInNpZCI6IjkyNjg5YTNiLTIxZjQtNDhiYS1iYmVlLTFhYjBlZjk4NzIyZSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDo4MDgyIiwiaHR0cDovL2xvY2FsaG9zdDo4MDgxIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJST0xFX01BTkFHRVIiXX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkJvYmJ5IE1hbmFnZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJib2JieSIsImdpdmVuX25hbWUiOiJCb2JieSIsImZhbWlseV9uYW1lIjoiTWFuYWdlciIsImVtYWlsIjoiYm9iYnlAZXhhbXBsZS5jb20ifQ.ZVd8Oi33adPNKBnt3b4jft3tJ86hKWe0y3Be4dhI97b6PLTOfMT8PGlvJK5lqs1s7_JyNQiGyYBZ5yF5kTnf7TOy3IF6iO6pyu8L9GrPqBUv3VlkcujrNTA1lmfN5nX8-jXoOJ6j9WG-WV6Iyp7nHETuqN-Bl0QiAsGVqb3Xsgzo-x1h_HLDMM4tGqzfi_CGTFrrbpbVuzlxBVuBhVypqbJZ--ZEP2AItCDdQqzFGd0xyos4_7wj-qKpIQRx7ZLILeMU04V-7DPKrxorYUK4hM2lzNz99oE5Fu8JCzU9v4XGqd67qGLFVnDRcPmkLCtTGiF0tQVvfV31qlmfqxfWEA",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8082/tracker/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"tracker",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "change book status",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJrUUQ1WGdEYlBUVFMwUG9jM000ZG1Bcjk2X21GODU0Y202LWVoZ3M0eUpJIn0.eyJleHAiOjE3Mzg0OTczODQsImlhdCI6MTczODQ5NzA4NCwianRpIjoiZTYzNjk3NjktNjMwZi00YmM0LTkxYzItMGEyOTE1OWIwOWFkIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy91c2VycyIsInN1YiI6IjhlNWViMjEyLTFmMjQtNDljMS1hN2Q1LWViMTg5MTcyMjlmMiIsInR5cCI6IkJlYXJlciIsImF6cCI6InNwcmluZyIsInNpZCI6IjkyNjg5YTNiLTIxZjQtNDhiYS1iYmVlLTFhYjBlZjk4NzIyZSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDo4MDgyIiwiaHR0cDovL2xvY2FsaG9zdDo4MDgxIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJST0xFX01BTkFHRVIiXX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6IkJvYmJ5IE1hbmFnZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJib2JieSIsImdpdmVuX25hbWUiOiJCb2JieSIsImZhbWlseV9uYW1lIjoiTWFuYWdlciIsImVtYWlsIjoiYm9iYnlAZXhhbXBsZS5jb20ifQ.ZVd8Oi33adPNKBnt3b4jft3tJ86hKWe0y3Be4dhI97b6PLTOfMT8PGlvJK5lqs1s7_JyNQiGyYBZ5yF5kTnf7TOy3IF6iO6pyu8L9GrPqBUv3VlkcujrNTA1lmfN5nX8-jXoOJ6j9WG-WV6Iyp7nHETuqN-Bl0QiAsGVqb3Xsgzo-x1h_HLDMM4tGqzfi_CGTFrrbpbVuzlxBVuBhVypqbJZ--ZEP2AItCDdQqzFGd0xyos4_7wj-qKpIQRx7ZLILeMU04V-7DPKrxorYUK4hM2lzNz99oE5Fu8JCzU9v4XGqd67qGLFVnDRcPmkLCtTGiF0tQVvfV31qlmfqxfWEA",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8082/tracker/status/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"tracker",
+						"status",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
