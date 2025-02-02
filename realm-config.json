@@ -1,0 +1,64 @@
+{
+  "realm": "users",
+  "enabled": true,
+  "clients": [
+{
+  "clientId": "spring",
+  "enabled": true,
+  "protocol": "openid-connect",
+  "publicClient": false,
+  "secret": "zzsCsUjQ2qQA5aVvl5wBgjDKQkWIigadB",
+  "redirectUris": [
+    "http://localhost:8081/*",
+    "http://localhost:8082/*"
+  ],
+  "webOrigins": [
+    "http://localhost:8081",
+    "http://localhost:8082"
+  ],
+  "directAccessGrantsEnabled": true
+}
+  ],
+  "roles": {
+    "realm": [
+      {
+        "name": "ROLE_MANAGER",
+        "description": "Manager Role"
+      },
+      {
+        "name": "ROLE_USER",
+        "description": "User Role"
+      }
+    ]
+  },
+  "users": [
+    {
+      "username": "bobby",
+      "enabled": true,
+      "firstName": "Bobby",
+      "lastName": "Manager",
+      "email": "bobby@example.com",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password"
+        }
+      ],
+      "realmRoles": ["ROLE_MANAGER"]
+    },
+    {
+      "username": "garry",
+      "enabled": true,
+      "firstName": "Garry",
+      "lastName": "User",
+      "email": "garry@example.com",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password"
+        }
+      ],
+      "realmRoles": ["ROLE_USER"]
+    }
+  ]
+}

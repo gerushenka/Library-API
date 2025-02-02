@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS book (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    isbn VARCHAR(255) NOT NULL UNIQUE,
+    title VARCHAR(255) NOT NULL,
+    genre VARCHAR(255),
+    description TEXT,
+    author VARCHAR(255)
+);

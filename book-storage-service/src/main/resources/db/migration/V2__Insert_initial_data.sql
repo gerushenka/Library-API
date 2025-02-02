@@ -1,0 +1,2 @@
+INSERT INTO book (isbn, title, genre, description, author) VALUES ('978-3-16-148410-0', 'Book1', 'Fiction', 'Description1', 'Author1');
+INSERT INTO book (isbn, title, genre, description, author) VALUES ('978-3-16-148411-7', 'Book2', 'Non-Fiction', 'Description2', 'Author2');
