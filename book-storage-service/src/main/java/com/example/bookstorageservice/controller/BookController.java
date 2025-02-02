@@ -3,7 +3,6 @@ package com.example.bookstorageservice.controller;
 import com.example.bookstorageservice.dto.BookDto;
 import com.example.bookstorageservice.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.servlet.http.HttpServletRequest; // Обновленный импорт
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

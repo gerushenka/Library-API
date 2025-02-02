@@ -1,4 +1,4 @@
-package com.example.bookstorageservice.repositories;
+package com.example.bookstorageservice.repository;
 
 import com.example.bookstorageservice.entity.Book;
 import org.springframework.data.jpa.repository.Modifying;
@@ -17,10 +17,11 @@ public interface BookRepository extends CrudRepository<Book, Long> {
     @Query("SELECT b FROM Book b JOIN Tracker t ON b.id = t.bookId WHERE t.status = 'available'")
     List<Book> findAvailableBooks();
 
-    @Modifying
     @Transactional
+    @Modifying(clearAutomatically = true) // Очистка контекста Hibernate
     @Query("UPDATE Book b SET b.deleted = true WHERE b.id = :id")
     void softDeleteBook(@Param("id") Long id);
+
 
     @Query("SELECT b FROM Book b WHERE b.deleted = false")
     List<Book> findAllActiveBooks();

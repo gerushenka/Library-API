@@ -4,7 +4,7 @@ import com.example.bookstorageservice.dto.BookDto;
 import com.example.bookstorageservice.dto.TrackerDto;
 import com.example.bookstorageservice.entity.Book;
 import com.example.bookstorageservice.mapper.BookMapper;
-import com.example.bookstorageservice.repositories.BookRepository;
+import com.example.bookstorageservice.repository.BookRepository;
 import com.example.bookstorageservice.client.TrackerClient;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
