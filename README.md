@@ -10,7 +10,6 @@ This project is a book management system consisting of two microservices: `book-
   - [Running book-storage-service](#running-book-storage-service)
   - [Running book-tracker-service](#running-book-tracker-service)
   - [Running Keycloak](#running-keycloak)
-- [Setting Up MySQL](#setting-up-mysql)
 - [Testing](#testing)
 - [Making requests](#Making-requests)
 - [Swagger](#Swagger-documentation)
