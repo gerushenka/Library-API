@@ -40,7 +40,6 @@ class BookRepositoryTest {
         entityManager.persist(book1);
         entityManager.persist(book2);
 
-        // Добавляем трекеры
         Tracker tracker1 = new Tracker(null, book1.getId(), "available", LocalDateTime.now().minusDays(10), null);
         Tracker tracker2 = new Tracker(null, book2.getId(), "borrowed", LocalDateTime.now().minusDays(5), LocalDateTime.now().plusDays(5));
 
@@ -67,11 +66,11 @@ class BookRepositoryTest {
     void testSoftDeleteBook() {
         bookRepository.softDeleteBook(book1.getId());
         entityManager.flush();
-        entityManager.clear(); // Очистка контекста Hibernate
+        entityManager.clear();
 
         List<Book> books = bookRepository.findAllActiveBooks();
 
-        System.out.println("Active books after deletion: " + books); // Проверяем, что в БД после soft-delete
+        System.out.println("Active books after deletion: " + books);
         assertThat(books).hasSize(1);
         assertThat(books.get(0).getId()).isEqualTo(book2.getId());
     }
