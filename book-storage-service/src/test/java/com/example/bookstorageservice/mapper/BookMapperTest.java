@@ -73,7 +73,7 @@ public class BookMapperTest {
         assertNull(book.getGenre());
         assertNull(book.getDescription());
         assertNull(book.getAuthor());
-        assertFalse(book.isDeleted()); // Предполагаем, что по умолчанию флаг deleted равен false
+        assertFalse(book.isDeleted());
     }
 
 }

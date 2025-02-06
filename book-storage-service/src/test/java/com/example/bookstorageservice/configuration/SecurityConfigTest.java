@@ -34,7 +34,7 @@ class SecurityConfigTest {
     @Test
     void jwtConverter_shouldReturnCorrectAuthorities() {
         when(jwtMock.getClaimAsMap("realm_access"))
-                .thenReturn(Map.of("roles", List.of("ROLE_MANAGER", "USER", "ROLE_ADMIN")));
+                .thenReturn(Map.of("roles", List.of("ROLE_MANAGER", "ROLE_USER")));
 
         var jwtAuthenticationConverter = securityConfig.jwtConverter();
         AbstractAuthenticationToken authenticationToken = jwtAuthenticationConverter.convert(jwtMock);
@@ -46,7 +46,7 @@ class SecurityConfigTest {
                 .collect(Collectors.toList());
 
         assertEquals(2, authorityNames.size());
-        assertEquals(List.of("ROLE_MANAGER", "ROLE_ADMIN"), authorityNames);
+        assertEquals(List.of("ROLE_MANAGER", "ROLE_USER"), authorityNames);
     }
 
     @Test
