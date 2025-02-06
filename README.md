@@ -91,7 +91,7 @@ Keycloak will be available at `http://localhost:8080`. You can log in using the 
 
 ## Testing
 
-To run tests, use the following command in the root directory of the project:
+To check tests, run that Docker and MySQL, use the following command in the root directory of the project:
 
 ```sh
 mvn test  
