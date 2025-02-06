@@ -41,20 +41,12 @@ public class SecurityConfig {
         JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
         JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
         converter.setPrincipalClaimName("preferred_username");
-
         converter.setJwtGrantedAuthoritiesConverter(jwt -> {
             Collection<GrantedAuthority> authorities = grantedAuthoritiesConverter.convert(jwt);
             Map<String, Object> claims = jwt.getClaimAsMap("realm_access");
-
             List<String> roles = claims != null ? (List<String>) claims.getOrDefault("roles", List.of()) : List.of();
-
-            return Stream.concat(authorities.stream(),
-                            roles.stream()
-                                    .filter(role -> role.startsWith("ROLE_"))
-                                    .map(SimpleGrantedAuthority::new))
-                    .toList();
+            return Stream.concat(authorities.stream(), roles.stream().map(SimpleGrantedAuthority::new)).toList();
         });
-
         return converter;
     }
 
