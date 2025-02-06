@@ -6,6 +6,7 @@ import com.example.booktrackerservice.repository.TrackerRepository;
 import com.example.booktrackerservice.mapper.TrackerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -21,6 +22,7 @@ public class TrackerService {
     @Autowired
     private TrackerMapper trackerMapper;
 
+    @Transactional
     public void createTracker(TrackerDto trackerDto) {
         Tracker tracker = new Tracker();
         tracker.setBookId(trackerDto.getBookId());
@@ -37,6 +39,7 @@ public class TrackerService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public void updateBookStatus(Long id) {
         Tracker tracker = trackerRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Book not found"));
         String newStatus = "unavailable".equals(tracker.getStatus()) ? "available" : "unavailable";
@@ -55,6 +58,7 @@ public class TrackerService {
         return trackerRepository.findAll();
     }
 
+    @Transactional
     public void deleteTracker(Long bookId) {
         trackerRepository.deleteByBookId(bookId);
     }

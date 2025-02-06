@@ -65,6 +65,7 @@ public class BookService {
         }
     }
 
+    @Transactional
     public void deleteBookById(Long id) {
         Optional<Book> optionalBook = bookRepository.findById(id);
         if (optionalBook.isPresent()) {
@@ -79,6 +80,7 @@ public class BookService {
         }
     }
 
+    @Transactional
     public BookDto addBook(BookDto bookDto) {
         Book existingBook = bookRepository.findByIsbn(bookDto.getIsbn());
         if (existingBook != null) {
@@ -103,6 +105,7 @@ public class BookService {
             return BookMapper.INSTANCE.toDto(savedBook);
         }
     }
+
     @Transactional
     public BookDto updateBook(Long id, BookDto bookDto) {
         Optional<Book> optionalBook = bookRepository.findById(id);
