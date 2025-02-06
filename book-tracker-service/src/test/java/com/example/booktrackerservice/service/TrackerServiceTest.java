@@ -4,118 +4,125 @@ import com.example.booktrackerservice.dto.TrackerDto;
 import com.example.booktrackerservice.entity.Tracker;
 import com.example.booktrackerservice.mapper.TrackerMapper;
 import com.example.booktrackerservice.repository.TrackerRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
+@SpringBootTest
+@Testcontainers
 public class TrackerServiceTest {
 
-    @Mock
+    @Container
+    private static final PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:14")
+            .withDatabaseName("testdb")
+            .withUsername("testuser")
+            .withPassword("testpass");
+
+    @DynamicPropertySource
+    static void configureDataSourceProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
+        registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
+        registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
+        registry.add("spring.jpa.database-platform", () -> "org.hibernate.dialect.PostgreSQLDialect");
+        registry.add("spring.datasource.driver-class-name", () -> "org.postgresql.Driver");
+        registry.add("spring.flyway.enabled", () -> "false");
+    }
+
+    @Autowired
     private TrackerRepository trackerRepository;
 
-    @Mock
+    @Autowired
     private TrackerMapper trackerMapper;
 
-    @InjectMocks
+    @Autowired
     private TrackerService trackerService;
+
+    private Tracker tracker;
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
+        tracker = new Tracker(null, 1L, "available", LocalDateTime.now(), null);
+        trackerRepository.save(tracker);
+        tracker = new Tracker(null, 2L, "unavailable", LocalDateTime.now(), LocalDateTime.now().plusDays(7));
+        trackerRepository.save(tracker);
+
+    }
+
+    @AfterEach
+    public void tearDown() {
+        trackerRepository.deleteAll();
     }
 
     @Test
     public void testCreateTracker() {
-        TrackerDto trackerDto = new TrackerDto(null, 1L, "available", LocalDateTime.now(), null);
-        Tracker tracker = new Tracker();
-        tracker.setBookId(trackerDto.getBookId());
-        tracker.setStatus(trackerDto.getStatus());
-        tracker.setCheckoutTime(trackerDto.getCheckoutTime());
-        tracker.setReturnTime(trackerDto.getReturnTime());
-
+        TrackerDto trackerDto = new TrackerDto(null, 3L, "available", LocalDateTime.now(), null);
         trackerService.createTracker(trackerDto);
-
-        verify(trackerRepository, times(1)).save(any(Tracker.class));
+        List<Tracker> trackers = StreamSupport.stream(trackerRepository.findAll().spliterator(), false).toList();
+        assertEquals(3, trackers.size());
+        assertEquals("available", trackers.get(2).getStatus());
     }
 
     @Test
     public void testGetAvailableBooks() {
-        List<Tracker> availableBooks = Arrays.asList(
-                new Tracker(1L, 1L, "available", LocalDateTime.now(), null),
-                new Tracker(2L, 2L, "available", LocalDateTime.now(), null)
-        );
-        when(trackerRepository.findAvailableBooks()).thenReturn(availableBooks);
-
         List<TrackerDto> result = trackerService.getAvailableBooks();
-
-        assertEquals(2, result.size());
-        verify(trackerRepository, times(1)).findAvailableBooks();
+        assertEquals(1, result.size());
     }
 
     @Test
     public void testUpdateBookStatus_FromAvailableToUnavailable() {
-        Tracker tracker = new Tracker(1L, 1L, "available", LocalDateTime.now(), null);
-        when(trackerRepository.findById(1L)).thenReturn(Optional.of(tracker));
-
-        trackerService.updateBookStatus(1L);
-
-        assertEquals("unavailable", tracker.getStatus());
-        assertNotNull(tracker.getCheckoutTime());
-        assertNotNull(tracker.getReturnTime());
-        verify(trackerRepository, times(1)).save(any(Tracker.class));
+        Long bookId = tracker.getId() - 1;
+        trackerService.updateBookStatus(bookId);
+        Tracker updatedTracker = trackerRepository.findById(bookId).orElseThrow();
+        assertEquals("unavailable", updatedTracker.getStatus());
+        assertNotNull(updatedTracker.getCheckoutTime());
+        assertNotNull(updatedTracker.getReturnTime());
     }
 
     @Test
     public void testUpdateBookStatus_FromUnavailableToAvailable() {
-        Tracker tracker = new Tracker(1L, 1L, "unavailable", LocalDateTime.now(), LocalDateTime.now().plusDays(7));
-        when(trackerRepository.findById(1L)).thenReturn(Optional.of(tracker));
+        Long bookId = tracker.getId();
 
-        trackerService.updateBookStatus(1L);
+        trackerService.updateBookStatus(bookId);
 
-        assertEquals("available", tracker.getStatus());
-        assertNull(tracker.getCheckoutTime());
-        assertNull(tracker.getReturnTime());
-        verify(trackerRepository, times(1)).save(any(Tracker.class));
+        Tracker updatedTracker = trackerRepository.findById(bookId).orElseThrow();
+        assertEquals("available", updatedTracker.getStatus());
+        assertNull(updatedTracker.getCheckoutTime());
+        assertNull(updatedTracker.getReturnTime());
     }
 
     @Test
     public void testUpdateBookStatus_NotFound() {
-        when(trackerRepository.findById(1L)).thenReturn(Optional.empty());
-
-        assertThrows(IllegalArgumentException.class, () -> {
-            trackerService.updateBookStatus(1L);
-        });
+        assertThrows(IllegalArgumentException.class, () -> trackerService.updateBookStatus(999L));
     }
 
     @Test
     public void testGetAll() {
-        List<Tracker> allBooks = Arrays.asList(
-                new Tracker(1L, 1L, "available", LocalDateTime.now(), null),
-                new Tracker(2L, 2L, "checked out", LocalDateTime.now().plusDays(1), null)
-        );
-        when(trackerRepository.findAll()).thenReturn(allBooks);
+        Iterable<Tracker> iterableResult = trackerService.getAll();
 
-        Iterable<Tracker> result = trackerService.getAll();
+        List<Tracker> resultList = StreamSupport.stream(iterableResult.spliterator(), false)
+                .collect(Collectors.toList());
 
-        assertEquals(2, ((List<Tracker>) result).size());
-        verify(trackerRepository, times(1)).findAll();
+        assertEquals(2, resultList.size());
     }
 
     @Test
     public void testDeleteTracker() {
         trackerService.deleteTracker(1L);
-
-        verify(trackerRepository, times(1)).deleteByBookId(1L);
+        List<Tracker> remainingTrackers = StreamSupport.stream(trackerRepository.findAll().spliterator(), false).toList();
+        assertEquals(1, remainingTrackers.size());
     }
 }

@@ -46,7 +46,7 @@ public class TrackerControllerTest {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders.standaloneSetup(trackerController).build();
         objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule()); // Регистрация модуля для работы с java.time
+        objectMapper.registerModule(new JavaTimeModule());
     }
 
     @Test
