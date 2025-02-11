@@ -10,16 +10,67 @@ services:
       KEYCLOAK_DB_URL: jdbc:h2:tcp://localhost/opt/keycloak/data/h2/keycloakdb
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-      KEYCLOAK_IMPORT: /opt/keycloak/data/import/realm-config.json 
+      KEYCLOAK_IMPORT: /opt/keycloak/data/import/realm-config.json
     networks:
       - keycloak-network
     volumes:
       - keycloak-data:/opt/keycloak/data
-      - ./realm-config.json:/opt/keycloak/data/import/realm-config.json  
+      - ./realm-config.json:/opt/keycloak/data/import/realm-config.json
     restart: always
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_DATABASE: books_db
+      MYSQL_ROOT_PASSWORD: pass1111
+    ports:
+      - "3307:3306"
+    networks:
+      - keycloak-network
+    volumes:
+      - mysql-data:/var/lib/mysql
+    restart: always
+
+  book-storage-service:
+    build:
+      context: ./book-storage-service
+      dockerfile: Dockerfile
+    container_name: book-storage-service
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/books_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: pass1111
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "8081:8081"
+    networks:
+      - keycloak-network
+    restart: on-failure
+
+  book-tracker-service:
+    build:
+      context: ./book-tracker-service
+      dockerfile: Dockerfile
+    container_name: book-tracker-service
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/books_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: pass1111
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "8082:8082"
+    networks:
+      - keycloak-network
+    restart: on-failure
 
 volumes:
   keycloak-data:
+  mysql-data:
 
 networks:
   keycloak-network:
