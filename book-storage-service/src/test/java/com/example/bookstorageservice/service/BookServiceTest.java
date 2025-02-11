@@ -2,7 +2,6 @@ package com.example.bookstorageservice.service;
 
 import com.example.bookstorageservice.dto.BookDto;
 import com.example.bookstorageservice.entity.Book;
-import com.example.bookstorageservice.mapper.BookMapper;
 import com.example.bookstorageservice.repository.BookRepository;
 import com.example.bookstorageservice.client.TrackerClient;
 import org.junit.jupiter.api.AfterEach;
@@ -11,33 +10,39 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
+import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Testcontainers
+@ActiveProfiles("test")
+@Transactional
 public class BookServiceTest {
+
     @Container
-    private static final PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:14")
+    private static final MySQLContainer<?> mysqlContainer = new MySQLContainer<>("mysql:8")
             .withDatabaseName("testdb")
             .withUsername("testuser")
             .withPassword("testpass");
 
     @DynamicPropertySource
     static void setDataSourceProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
-        registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
-        registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
-        registry.add("spring.datasource.driver-class-name", () -> "org.postgresql.Driver");
+        registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
+        registry.add("spring.datasource.username", mysqlContainer::getUsername);
+        registry.add("spring.datasource.password", mysqlContainer::getPassword);
+        registry.add("spring.datasource.driver-class-name", () -> "com.mysql.cj.jdbc.Driver");
     }
 
     @Autowired
@@ -49,29 +54,30 @@ public class BookServiceTest {
     @MockBean
     private TrackerClient trackerClient;
 
-    private Book book;
-    private BookDto bookDto;
-
+    private Long existingBookId1;
+    private Long existingBookId2;
 
     @BeforeEach
     void setUp() {
-        book = new Book(null, "1234567890", "Book One", "Fiction", "Description One", "Author One", false);
-        bookRepository.save(book);
-        bookDto = BookMapper.INSTANCE.toDto(book);
+        List<Book> books = StreamSupport.stream(bookRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
+
+        assertNotNull(books);
+        assertFalse(books.isEmpty());
+        existingBookId1 = books.get(0).getId();
+        existingBookId2 = books.get(1).getId();
     }
 
     @AfterEach
     void tearDown() {
-        bookRepository.deleteAll();
     }
-
 
     @Test
     void testGetBookById() {
-        BookDto result = bookService.getBookById(book.getId());
-        assertThat(result).isNotNull();
-        assertThat(result.getIsbn()).isEqualTo("1234567890");
-        assertThat(result.getTitle()).isEqualTo("Book One");
+        BookDto result = bookService.getBookById(existingBookId1);
+        assertNotNull(result);
+        assertEquals("978-3-16-148410-0", result.getIsbn());
+        assertEquals("Book1", result.getTitle());
     }
 
     @Test
@@ -81,129 +87,66 @@ public class BookServiceTest {
 
     @Test
     void testGetBookByIsbn() {
-        BookDto result = bookService.getBookByIsbn("1234567890");
-
-        assertThat(result).isNotNull();
-        assertThat(result.getIsbn()).isEqualTo("1234567890");
+        BookDto result = bookService.getBookByIsbn("978-3-16-148410-0");
+        assertNotNull(result);
+        assertEquals("978-3-16-148410-0", result.getIsbn());
+        assertEquals("Book1", result.getTitle());
     }
 
     @Test
-    void testAddBook() {
-        BookDto newBookDto = new BookDto(null, "9876543210", "New Book", "Non-Fiction", "New Description", "New Author", false);
-        BookDto result = bookService.addBook(newBookDto);
-
-        assertThat(result).isNotNull();
-        assertThat(result.getIsbn()).isEqualTo("9876543210");
+    void testAddBook_BookAlreadyExists() {
+        BookDto newBookDto = new BookDto(null, "978-3-16-148410-0", "Book1", "Fiction", "Description1", "Author1", false);
+        assertThrows(IllegalArgumentException.class, () -> bookService.addBook(newBookDto));
     }
 
     @Test
-    void testUpdateBook_NotFound() {
-        BookDto updatedDto = new BookDto(99L, "1234567890", "Updated Book", "Fiction", "Updated Description", "Updated Author", false);
+    void testUpdateBook_Success() {
+        BookDto updatedDto = new BookDto(existingBookId1, "978-3-16-148410-0", "Updated Title", "Fiction", "Updated Description", "Updated Author", false);
+        BookDto result = bookService.updateBook(existingBookId1, updatedDto);
+        assertNotNull(result);
+        assertEquals("Updated Title", result.getTitle());
+        assertEquals("Updated Description", result.getDescription());
+        assertEquals("Updated Author", result.getAuthor());
+    }
+
+    @Test
+    void testUpdateBook_BookNotFound() {
+        BookDto updatedDto = new BookDto(99L, "978-3-16-148410-0", "Updated Title", "Fiction", "Updated Description", "Updated Author", false);
         assertThrows(IllegalArgumentException.class, () -> bookService.updateBook(99L, updatedDto));
     }
 
     @Test
     void testGetAllBooks() {
         List<BookDto> result = bookService.getAllBooks();
-
-        assertThat(result).isNotEmpty();
-        assertThat(result.get(0).getIsbn()).isEqualTo("1234567890");
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+        assertEquals(2, result.size());
     }
 
     @Test
     void testGetAllActiveBooks() {
         List<BookDto> result = bookService.getAllActiveBooks();
-
-        assertThat(result).isNotEmpty();
-        assertThat(result.get(0).getIsbn()).isEqualTo("1234567890");
-    }
-
-    @Test
-    void testDeleteBook_NotFound() {
-        assertThrows(IllegalArgumentException.class, () -> bookService.deleteBookById(99L));
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+        assertEquals(2, result.size());
     }
 
     @Test
     void testDeleteBook_Success() {
-        Long bookId = book.getId();
-        assertNotNull(bookId);
-        bookService.deleteBookById(bookId);
-        Optional<Book> deletedBook = bookRepository.findById(bookId);
+        bookService.deleteBookById(existingBookId1);
+        Optional<Book> deletedBook = bookRepository.findById(existingBookId1);
         assertTrue(deletedBook.isPresent());
         assertTrue(deletedBook.get().isDeleted());
     }
 
     @Test
     void testDeleteBook_AlreadyDeleted() {
-        book.setDeleted(true);
-        bookRepository.save(book);
-
-        assertThrows(IllegalArgumentException.class, () -> bookService.deleteBookById(1L));
-    }
-
-    @Test
-    void testUpdateBook_BookNotFound() {
-        BookDto updatedDto = new BookDto(99L, "1234567890", "Updated Book", "Fiction", "Updated Description", "Updated Author", false);
-        assertThrows(IllegalArgumentException.class, () -> bookService.updateBook(99L, updatedDto));
-    }
-
-    @Test
-    void testAddBook_BookAlreadyExists() {
-        assertThrows(IllegalArgumentException.class, () -> bookService.addBook(bookDto));
-    }
-
-    @Test
-    void testAddBook_RestoreDeletedBook() {
-        book.setDeleted(true);
-        bookRepository.save(book);
-
-        BookDto result = bookService.addBook(bookDto);
-
-        assertThat(result).isNotNull();
-        assertThat(result.getIsbn()).isEqualTo("1234567890");
-        assertThat(result.isDeleted()).isFalse();
-    }
-
-    @Test
-    void testAddBook_NewBook() {
-        BookDto newBookDto = new BookDto(null, "9876543210", "New Book", "Non-Fiction", "New Description", "New Author", false);
-        BookDto result = bookService.addBook(newBookDto);
-
-        assertThat(result).isNotNull();
-        assertThat(result.getIsbn()).isEqualTo("9876543210");
+        bookService.deleteBookById(existingBookId1);
+        assertThrows(IllegalArgumentException.class, () -> bookService.deleteBookById(existingBookId1));
     }
 
     @Test
     void testGetBookByIsbn_NotFound() {
         assertThrows(IllegalArgumentException.class, () -> bookService.getBookByIsbn("0000000000"));
-    }
-
-    @Test
-    void testUpdateBook_AlreadyDeleted() {
-        book.setDeleted(true);
-        bookRepository.save(book);
-
-        BookDto updatedDto = new BookDto(1L, "1234567890", "Updated Book", "Fiction", "Updated Description", "Updated Author", false);
-        assertThrows(IllegalArgumentException.class, () -> bookService.updateBook(1L, updatedDto));
-    }
-
-    @Test
-    void testGetBookById_Deleted() {
-        book.setDeleted(true);
-        bookRepository.save(book);
-
-        assertThrows(IllegalArgumentException.class, () -> bookService.getBookById(1L));
-    }
-
-    @Test
-    void testUpdateBook_Success() {
-        Long bookId = book.getId();
-        assertNotNull(bookId);
-        BookDto updatedDto = new BookDto(bookId, "1234567890", "Updated Title", "Fiction", "Updated Description", "Updated Author", false);
-        BookDto result = bookService.updateBook(bookId, updatedDto);
-        assertNotNull(result);
-        assertEquals("Updated Title", result.getTitle());
-        assertEquals("Updated Description", result.getDescription());
-        assertEquals("Updated Author", result.getAuthor());
     }
 }

@@ -18,7 +18,7 @@ public interface BookRepository extends CrudRepository<Book, Long> {
     List<Book> findAvailableBooks();
 
     @Transactional
-    @Modifying(clearAutomatically = true) // Очистка контекста Hibernate
+    @Modifying(clearAutomatically = true)
     @Query("UPDATE Book b SET b.deleted = true WHERE b.id = :id")
     void softDeleteBook(@Param("id") Long id);
 

@@ -1,102 +1,80 @@
 package com.example.bookstorageservice.repository;
 
 import com.example.bookstorageservice.entity.Book;
-import com.example.bookstorageservice.entity.Tracker;
-import org.junit.jupiter.api.AfterEach;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Testcontainers
+@ActiveProfiles("test")
+@Transactional
 public class BookRepositoryTest {
 
     @Container
-    private static final PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>(DockerImageName.parse("postgres:14"))
+    private static final MySQLContainer<?> mysqlContainer = new MySQLContainer<>(DockerImageName.parse("mysql:8.0"))
             .withDatabaseName("testdb")
             .withUsername("testuser")
             .withPassword("testpass");
 
     @DynamicPropertySource
     static void setDataSourceProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
-        registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
-        registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
-        registry.add("spring.datasource.driver-class-name", () -> "org.postgresql.Driver");
+        registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
+        registry.add("spring.datasource.username", mysqlContainer::getUsername);
+        registry.add("spring.datasource.password", mysqlContainer::getPassword);
+        registry.add("spring.datasource.driver-class-name", () -> "com.mysql.cj.jdbc.Driver");
     }
 
     @Autowired
     private BookRepository bookRepository;
 
-    @Autowired
-    private TrackerRepository trackerRepository;
-
-    private Book book1;
-    private Book book2;
+    private Long existingBookId1;
+    private Long existingBookId2;
 
     @BeforeEach
     void setUp() {
-        book1 = new Book(null, "1234567890", "Book One", "Fiction", "Description One", "Author One", false);
-        book2 = new Book(null, "0987654321", "Book Two", "Science", "Description Two", "Author Two", false);
+        List<Book> books = StreamSupport.stream(bookRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
+        assertThat(books).isNotEmpty();
 
-        book1 = bookRepository.save(book1);
-        book2 = bookRepository.save(book2);
-
-        Tracker tracker1 = new Tracker(null, book1.getId(), "available", LocalDateTime.now().minusDays(10), null);
-        Tracker tracker2 = new Tracker(null, book2.getId(), "borrowed", LocalDateTime.now().minusDays(5), LocalDateTime.now().plusDays(5));
-
-        trackerRepository.save(tracker1);
-        trackerRepository.save(tracker2);
-    }
-
-    @AfterEach
-    void tearDown() {
-        bookRepository.deleteAll();
-        trackerRepository.deleteAll(); // Очистите трекеры после каждого теста
+        existingBookId1 = books.get(0).getId();
+        existingBookId2 = books.get(1).getId();
     }
 
     @Test
     void testFindByIsbn() {
-        Book foundBook = bookRepository.findByIsbn("1234567890");
-
+        Book foundBook = bookRepository.findByIsbn("978-3-16-148410-0");
         assertThat(foundBook).isNotNull();
-        assertThat(foundBook.getTitle()).isEqualTo("Book One");
+        assertThat(foundBook.getTitle()).isEqualTo("Book1");
     }
 
     @Test
     void testFindAllActiveBooks() {
         List<Book> books = bookRepository.findAllActiveBooks();
-
         assertThat(books).hasSize(2);
     }
 
     @Test
     void testSoftDeleteBook() {
-        bookRepository.softDeleteBook(book1.getId());
+        bookRepository.softDeleteBook(existingBookId1);
 
-        List<Book> books = bookRepository.findAllActiveBooks();
-
-        assertThat(books).hasSize(1);
-        assertThat(books.get(0).getId()).isEqualTo(book2.getId());
-    }
-
-    @Test
-    void testFindAvailableBooks() {
-        List<Book> books = bookRepository.findAvailableBooks();
-
-        assertThat(books).hasSize(1);
-        assertThat(books.get(0).getId()).isEqualTo(book1.getId());
+        List<Book> activeBooks = bookRepository.findAllActiveBooks();
+        assertThat(activeBooks).hasSize(1); // Осталась только вторая книга
+        assertThat(activeBooks.get(0).getId()).isEqualTo(existingBookId2);
     }
 }

@@ -1,68 +1,76 @@
 package com.example.booktrackerservice.repository;
 
 import com.example.booktrackerservice.entity.Tracker;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
+import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Testcontainers
+@ActiveProfiles("test")
+@Transactional
 public class TrackerRepositoryTest {
 
+    private static final Logger logger = LoggerFactory.getLogger(TrackerRepositoryTest.class);
+
     @Container
-    private static final PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:14")
+    private static final MySQLContainer<?> mysqlContainer = new MySQLContainer<>("mysql:8")
             .withDatabaseName("testdb")
             .withUsername("testuser")
             .withPassword("testpass");
 
     @DynamicPropertySource
     static void configureDataSourceProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
-        registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
-        registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
-        registry.add("spring.jpa.database-platform", () -> "org.hibernate.dialect.PostgreSQLDialect");
-        registry.add("spring.datasource.driver-class-name", () -> "org.postgresql.Driver");
-        registry.add("spring.flyway.enabled", () -> "false");
+        registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
+        registry.add("spring.datasource.username", mysqlContainer::getUsername);
+        registry.add("spring.datasource.password", mysqlContainer::getPassword);
+        registry.add("spring.datasource.driver-class-name", () -> "com.mysql.cj.jdbc.Driver");
+        registry.add("spring.jpa.database-platform", () -> "org.hibernate.dialect.MySQLDialect");
+        registry.add("spring.flyway.enabled", () -> "true");
     }
 
     @Autowired
     private TrackerRepository trackerRepository;
 
-    private Tracker tracker1;
-    private Tracker tracker2;
+    private Long existingTrackerId1;
+    private Long existingTrackerId2;
 
     @BeforeEach
     public void setUp() {
-        trackerRepository.deleteAll();
+        List<Tracker> trackers = StreamSupport.stream(trackerRepository.findAll().spliterator(), false)
+                .collect(Collectors.toList());
 
-        tracker1 = new Tracker(null, 1L, "available", LocalDateTime.now(), null);
-        tracker2 = new Tracker(null, 2L, "unavailable", LocalDateTime.now(), LocalDateTime.now().plusDays(1));
+        assertNotNull(trackers);
+        assertFalse(trackers.isEmpty());
 
-        trackerRepository.save(tracker1);
-        trackerRepository.save(tracker2);
+        existingTrackerId1 = trackers.get(0).getId();
+        existingTrackerId2 = trackers.get(1).getId();
     }
 
     @AfterEach
-    public void tearDown() {
-        trackerRepository.deleteAll();
+    void tearDown() {
     }
 
     @Test
     public void testFindByBookId() {
         Tracker foundTracker = trackerRepository.findByBookId(1L);
-
         assertNotNull(foundTracker);
         assertEquals(1L, foundTracker.getBookId());
         assertEquals("available", foundTracker.getStatus());
@@ -71,9 +79,9 @@ public class TrackerRepositoryTest {
     @Test
     public void testFindAvailableBooks() {
         List<Tracker> availableBooks = trackerRepository.findAvailableBooks();
-
         assertNotNull(availableBooks);
-        assertEquals(1, availableBooks.size());
+
+        assertEquals(2, availableBooks.size());
         assertEquals("available", availableBooks.get(0).getStatus());
     }
 
