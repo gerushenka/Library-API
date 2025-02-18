@@ -1,5 +1,4 @@
 version: '3.7'
-
 services:
   keycloak:
     image: quay.io/keycloak/keycloak:latest
@@ -39,6 +38,7 @@ services:
     container_name: book-storage-service
     depends_on:
       - mysql
+    entrypoint: ["sh", "-c", "sleep 60 && exec java -jar app.jar"]
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/books_db
       SPRING_DATASOURCE_USERNAME: root
@@ -57,6 +57,7 @@ services:
     container_name: book-tracker-service
     depends_on:
       - mysql
+    entrypoint: ["sh", "-c", "sleep 60 && exec java -jar app.jar"]
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/books_db
       SPRING_DATASOURCE_USERNAME: root
